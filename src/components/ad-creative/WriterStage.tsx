@@ -100,7 +100,7 @@ export const WriterStage: React.FC<WriterStageProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-20">
         {filteredCopies.map((copy: any) => {
           const toneKey = copy.tone as Tone;
-          const cfg = TONE_CONFIG[toneKey] || TONE_CONFIG['감성'];
+          const cfg = TONE_CONFIG[toneKey] || TONE_CONFIG['친근'];
           const isEditing = editingId === copy.id;
 
           return (

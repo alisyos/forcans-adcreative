@@ -6,17 +6,17 @@ import { ScouterStage } from '@/components/ad-creative/ScouterStage';
 import { WriterStage } from '@/components/ad-creative/WriterStage';
 import { DesignerStage } from '@/components/ad-creative/DesignerStage';
 import { EmptyState, LoadingState } from '@/components/ad-creative/ui/StatusStates';
-import { Stage, Tone, MediaFormat, MEDIA_OPTIONS, AdCopy, AdCut } from '@/components/ad-creative/constants';
+import { Stage, Tone, MediaFormat, MEDIA_OPTIONS, CATEGORY_OPTIONS, AdCopy, AdCut } from '@/components/ad-creative/constants';
 import { MOCK_SCOUT_RESULT, MOCK_WRITER_RESULT, MOCK_DESIGN_RESULT } from '@/components/ad-creative/mockData';
 
 export default function AdCreativePage() {
   const [stage, setStage] = useState<Stage>('scouter');
   const [loading, setLoading] = useState(false);
   const [loadingStage, setLoadingStage] = useState<Stage | null>(null);
-  const [category, setCategory] = useState('뷰티/스킨케어');
+  const [category, setCategory] = useState<string>(CATEGORY_OPTIONS[0]);
   const [productName, setProductName] = useState('');
   const [customCopy, setCustomCopy] = useState('');
-  const [selectedTone, setSelectedTone] = useState<Tone>('감성');
+  const [selectedTone, setSelectedTone] = useState<Tone>('친근');
   const [mediaFormat, setMediaFormat] = useState<MediaFormat>('naver_16_9');
   const [scoutResult, setScoutResult] = useState<any>(null);
   const [writerResult, setWriterResult] = useState<{ insight_applied: string, copies: AdCopy[] } | null>(null);
@@ -53,7 +53,13 @@ export default function AdCreativePage() {
       });
       const data = await res.json();
       setWriterResult(data);
-    } catch { await delay(1500); setWriterResult(MOCK_WRITER_RESULT); }
+    } catch {
+      await delay(1500);
+      setWriterResult({
+        ...MOCK_WRITER_RESULT,
+        copies: MOCK_WRITER_RESULT.copies.map(c => ({ ...c, tone: selectedTone })),
+      });
+    }
     finally { setStage('writer'); setLoading(false); setLoadingStage(null); }
   };
 
@@ -141,9 +147,10 @@ export default function AdCreativePage() {
             ) : loadingStage === 'scouter' ? (
               <LoadingState title="Scouting Market Trends" />
             ) : (
-              <ScouterStage 
-                scoutResult={scoutResult} 
-                generateNarrative={generateNarrative} 
+              <ScouterStage
+                scoutResult={scoutResult}
+                setScoutResult={setScoutResult}
+                generateNarrative={generateNarrative}
                 loading={loading}
                 onSelectPhrase={(phrase) => {
                   setCustomCopy(prev => prev ? `${prev}, ${phrase}` : phrase);

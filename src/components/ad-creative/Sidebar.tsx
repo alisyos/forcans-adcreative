@@ -2,8 +2,9 @@ import React from 'react';
 import { Search, CheckCircle2, Monitor, Smartphone, Layout, PenTool, Image as ImageIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
-import { Stage, Tone, MediaFormat, TONE_CONFIG, MEDIA_OPTIONS } from './constants';
+import { Stage, Tone, MediaFormat, TONE_CONFIG, MEDIA_OPTIONS, CATEGORY_OPTIONS } from './constants';
 
 interface SidebarProps {
   stage: Stage;
@@ -65,15 +66,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
             <div className="space-y-2">
               <span className="text-[11px] font-bold text-slate-900 ml-1">카테고리 (Category)</span>
-              <div className="relative group">
-                <Input 
-                  value={category} 
-                  onChange={(e) => setCategory(e.target.value)}
-                  className="h-11 text-[13px] border-slate-200 rounded-2xl bg-slate-50/50 focus:bg-white focus:ring-zinc-500/10 focus:border-zinc-300 transition-all pr-10 pl-4 font-medium" 
-                  placeholder="Ex. 스킨케어" 
-                />
-                <Search className="w-4 h-4 absolute right-3.5 top-3.5 text-slate-300 group-focus-within:text-zinc-500 transition-colors" />
-              </div>
+              <Select value={category} onValueChange={setCategory}>
+                <SelectTrigger className="h-11 text-[13px] border-slate-200 rounded-2xl bg-slate-50/50 focus:bg-white focus:ring-zinc-500/10 focus:border-zinc-300 transition-all px-4 font-medium data-[placeholder]:text-slate-300">
+                  <SelectValue placeholder="카테고리를 선택하세요" />
+                </SelectTrigger>
+                <SelectContent className="rounded-2xl bg-white border-slate-200 shadow-lg">
+                  {CATEGORY_OPTIONS.map((opt) => (
+                    <SelectItem key={opt} value={opt} className="text-[13px] font-medium rounded-xl">
+                      {opt}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
 
@@ -141,7 +145,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         "w-2.5 h-2.5 rounded-full transition-transform group-hover:scale-125",
                         isSelected ? "ring-4 ring-zinc-100" : ""
                       )} 
-                      style={{ background: tone === '감성' ? '#fb7185' : tone === '대담' ? '#f97316' : tone === '유머' ? '#10b981' : '#8b5cf6' }} 
+                      style={{ background: TONE_CONFIG[tone].dot }}
                     />
                     {tone}
                     {isSelected && <CheckCircle2 className="w-4 h-4 ml-auto text-zinc-900" />}

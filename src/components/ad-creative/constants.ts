@@ -1,10 +1,17 @@
 import { Monitor, Smartphone } from 'lucide-react';
 
 export type Stage = 'scouter' | 'writer' | 'designer';
-export type Tone = '감성' | '대담' | '유머' | '미스터리';
+export type Tone = '친근' | '공지형' | '공감형' | '후기형' | '긴급형' | '정보형';
 export type MediaFormat = 'naver_1_1' | 'naver_16_9' | 'naver_2_3' | 'naver_native' | 'coupang_c3' | 'coupang_r1' | 'coupang_g1' | 'coupang_p3';
 
 export const MAX_ITEMS = 4;
+
+export const CATEGORY_OPTIONS = [
+  '강아지 덴탈껌',
+  '강아지 영양제',
+  '펫디저트',
+  '강아지 샴푸&위생관리',
+] as const;
 
 export interface AdCopy {
   id: number;
@@ -117,11 +124,13 @@ export interface AdCut {
   layout_note?: string;
 }
 
-export const TONE_CONFIG: Record<Tone, { color: string, bg: string, border: string }> = {
-  '감성': { color: 'text-rose-600', bg: 'bg-rose-50', border: 'border-rose-200' },
-  '대담': { color: 'text-orange-600', bg: 'bg-orange-50', border: 'border-orange-200' },
-  '유머': { color: 'text-emerald-600', bg: 'bg-emerald-50', border: 'border-emerald-200' },
-  '미스터리': { color: 'text-violet-600', bg: 'bg-violet-50', border: 'border-violet-200' },
+export const TONE_CONFIG: Record<Tone, { color: string, bg: string, border: string, dot: string }> = {
+  '친근': { color: 'text-rose-600', bg: 'bg-rose-50', border: 'border-rose-200', dot: '#fb7185' },
+  '공지형': { color: 'text-blue-600', bg: 'bg-blue-50', border: 'border-blue-200', dot: '#3b82f6' },
+  '공감형': { color: 'text-emerald-600', bg: 'bg-emerald-50', border: 'border-emerald-200', dot: '#10b981' },
+  '후기형': { color: 'text-amber-600', bg: 'bg-amber-50', border: 'border-amber-200', dot: '#f59e0b' },
+  '긴급형': { color: 'text-red-600', bg: 'bg-red-50', border: 'border-red-200', dot: '#ef4444' },
+  '정보형': { color: 'text-violet-600', bg: 'bg-violet-50', border: 'border-violet-200', dot: '#8b5cf6' },
 };
 
 export const MEDIA_OPTIONS: { id: MediaFormat, label: string, icon: any, ratio: string, w: number, h: number, desc: string, group: string }[] = [
@@ -136,28 +145,40 @@ export const MEDIA_OPTIONS: { id: MediaFormat, label: string, icon: any, ratio: 
 ];
 
 export const CTR_DATA: Record<string, { target: string, ctr: number, color: string }[]> = {
-  '감성': [
+  '친근': [
     { target: '20대 여성', ctr: 4.8, color: 'bg-rose-500' },
     { target: '30대 여성', ctr: 5.2, color: 'bg-rose-500' },
-    { target: '20대 남성', ctr: 2.1, color: 'bg-rose-300' },
-    { target: '40대 여성', ctr: 3.9, color: 'bg-rose-400' },
+    { target: '20대 남성', ctr: 2.9, color: 'bg-rose-300' },
+    { target: '40대 여성', ctr: 4.1, color: 'bg-rose-400' },
   ],
-  '유머': [
+  '공지형': [
+    { target: '20대 여성', ctr: 3.1, color: 'bg-blue-300' },
+    { target: '30대 여성', ctr: 4.0, color: 'bg-blue-400' },
+    { target: '20대 남성', ctr: 4.4, color: 'bg-blue-400' },
+    { target: '40대 여성', ctr: 4.7, color: 'bg-blue-500' },
+  ],
+  '공감형': [
     { target: '20대 여성', ctr: 6.1, color: 'bg-emerald-500' },
-    { target: '30대 여성', ctr: 3.4, color: 'bg-emerald-300' },
-    { target: '20대 남성', ctr: 5.7, color: 'bg-emerald-500' },
-    { target: '40대 여성', ctr: 2.0, color: 'bg-emerald-200' },
+    { target: '30대 여성', ctr: 5.6, color: 'bg-emerald-500' },
+    { target: '20대 남성', ctr: 3.2, color: 'bg-emerald-300' },
+    { target: '40대 여성', ctr: 4.3, color: 'bg-emerald-400' },
   ],
-  '미스터리': [
-    { target: '20대 여성', ctr: 5.5, color: 'bg-violet-500' },
-    { target: '30대 여성', ctr: 4.1, color: 'bg-violet-400' },
-    { target: '20대 남성', ctr: 4.9, color: 'bg-violet-400' },
-    { target: '40대 여성', ctr: 3.3, color: 'bg-violet-300' },
+  '후기형': [
+    { target: '20대 여성', ctr: 5.4, color: 'bg-amber-500' },
+    { target: '30대 여성', ctr: 5.9, color: 'bg-amber-500' },
+    { target: '20대 남성', ctr: 3.6, color: 'bg-amber-300' },
+    { target: '40대 여성', ctr: 5.1, color: 'bg-amber-400' },
   ],
-  '대담': [
-    { target: '20대 여성', ctr: 3.2, color: 'bg-orange-300' },
-    { target: '30대 여성', ctr: 4.5, color: 'bg-orange-400' },
-    { target: '20대 남성', ctr: 3.8, color: 'bg-orange-400' },
-    { target: '40대 여성', ctr: 5.0, color: 'bg-orange-500' },
+  '긴급형': [
+    { target: '20대 여성', ctr: 5.0, color: 'bg-red-400' },
+    { target: '30대 여성', ctr: 4.6, color: 'bg-red-400' },
+    { target: '20대 남성', ctr: 5.8, color: 'bg-red-500' },
+    { target: '40대 여성', ctr: 4.2, color: 'bg-red-300' },
+  ],
+  '정보형': [
+    { target: '20대 여성', ctr: 4.2, color: 'bg-violet-400' },
+    { target: '30대 여성', ctr: 4.5, color: 'bg-violet-400' },
+    { target: '20대 남성', ctr: 5.3, color: 'bg-violet-500' },
+    { target: '40대 여성', ctr: 4.0, color: 'bg-violet-300' },
   ],
 };
